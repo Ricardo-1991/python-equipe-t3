@@ -10,23 +10,6 @@ Este é um aplicativo de lista de tarefas simples em Python. Ele permite que voc
 - `task_manager.py`: Um módulo que gerencia as operações de tarefas, como adicionar, listar, marcar como realizada e editar.
 - `utils.py`: Um módulo de utilidades com funções auxiliares.
 
-## Como Executar
-
-Certifique-se de ter Python instalado no seu sistema.
-
-1. Clone o repositório:
-
-```bash
-git clone https://github.com/seu-usuario/todolist-app.git
-cd todolist-app
-```
-
-2. Execute o aplicativo:
-
-```bash
-python todolist.py
-```
-
 ## Funcionalidades
 
 1. **Listar Tarefas**: Exibe a lista de tarefas, mostrando as tarefas realizadas e pendentes.
