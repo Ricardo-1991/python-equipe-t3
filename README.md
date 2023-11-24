@@ -4,4 +4,5 @@
 
 - Tiago Senger dos Santos / tiagosengerds@gmail.com
 - Paulo Ricardo Santos Nascimento / ricardo.dev1991@gmail.com
+- Ana Caroline Neris Fonseca / carolnerisfonseca@gmail.com 
   
