@@ -1,4 +1,11 @@
+class ToDoList:
+    def __init__(self):
+        self.tasks = []
+
+todo_list = ToDoList()
+
 def print_menu():
+    
     print("\nMenu:")
     print("1. Mostrar Tarefas")
     print("2. Registrar Nova Tarefa")
