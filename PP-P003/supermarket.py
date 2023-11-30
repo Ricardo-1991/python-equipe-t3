@@ -21,8 +21,10 @@ class Supermercado:
         return None
 
     def listar_produtos_paginados(self, pagina, itens_por_pagina=10):
+        produtos_ordenados = sorted(self.produtos, key=lambda x: x.preco)
         inicio = (pagina - 1) * itens_por_pagina
         fim = inicio + itens_por_pagina
-        produtos_pagina = self.produtos[inicio:fim]
+        produtos_pagina = produtos_ordenados[inicio:fim]
+
         for produto in produtos_pagina:
             print(produto)
