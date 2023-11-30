@@ -1,6 +1,10 @@
+import json
+
 class GerenciadorProdutos:
     def __init__(self):
         self.produtos = {}
+        self.arquivo = "produtos.txt"
+        self.carregar_produtos()
 
     def validar_codigo(self, codigo):
         return len(codigo) == 13 and codigo.isdigit()
@@ -14,6 +18,17 @@ class GerenciadorProdutos:
             return preco >= 0
         except ValueError:
             return False
+
+    def carregar_produtos(self):
+        try:
+            with open(self.arquivo, 'r') as file:
+                self.produtos = json.load(file)
+        except FileNotFoundError:
+            print("Arquivo de produtos não encontrado. Criando um novo.")
+
+    def salvar_produtos(self):
+        with open(self.arquivo, 'w') as file:
+            json.dump(self.produtos, file)
 
     def inserir_produto(self, codigo, nome, preco):
         if not self.validar_codigo(codigo):
@@ -29,8 +44,9 @@ class GerenciadorProdutos:
             return
 
         if codigo not in self.produtos:
-            self.produtos[codigo] = [nome, preco]
+            self.produtos[codigo] = {'nome': nome, 'preco': preco}
             print(f"Produto {nome} inserido com sucesso!")
+            self.salvar_produtos()
         else:
             print("Código de produto já existe. Use outro código.")
 
@@ -38,6 +54,7 @@ class GerenciadorProdutos:
         if codigo in self.produtos:
             del self.produtos[codigo]
             print(f"Produto com código {codigo} excluído com sucesso!")
+            self.salvar_produtos()
         else:
             print("Código de produto não encontrado.")
 
@@ -46,17 +63,16 @@ class GerenciadorProdutos:
             print("Nenhum produto cadastrado.")
         else:
             print("Lista de produtos:")
-            produtos_ordenados = sorted(self.produtos.items(), key=lambda x: float(x[1][1]))
-            for i, (codigo, (nome, preco)) in enumerate(produtos_ordenados, start=1):
-                print(f"{i} - Código: {codigo}, Nome: {nome}, Preço: R${preco:.2f}")
+            produtos_ordenados = sorted(self.produtos.items(), key=lambda x: float(x[1]['preco']))
+            for i, (codigo, produto) in enumerate(produtos_ordenados, start=1):
+                print(f"{i} - Código: {codigo}, Nome: {produto['nome']}, Preço: R${produto['preco']:.2f}")
 
     def consultar_preco(self, codigo):
         if codigo in self.produtos:
-            nome, preco = self.produtos[codigo]
-            print(f"O preço do produto {nome} (Código {codigo}) é R${preco:.2f}.")
+            produto = self.produtos[codigo]
+            print(f"O preço do produto {produto['nome']} (Código {codigo}) é R${produto['preco']:.2f}.")
         else:
             print("Código de produto não encontrado.")
-
 
 # Exemplo de uso do programa
 gerenciador = GerenciadorProdutos()
