@@ -23,5 +23,29 @@ def main():
             supermercado.inserir_produto(produto)
             print("Produto inserido com sucesso!")
 
+        elif opcao == "2":
+            codigo = input("Digite o código do produto a ser excluído: ")
+            supermercado.excluir_produto(codigo)
+            print("Produto excluído com sucesso!")
+
+        elif opcao == "3":
+            pagina = int(input("Digite o número da página: "))
+            supermercado.listar_produtos_paginados(pagina)
+
+        elif opcao == "4":
+            codigo = input("Digite o código do produto: ")
+            preco = supermercado.consultar_preco(codigo)
+            if preco is not None:
+                print(f"Preço do produto: {preco:.2f}")
+            else:
+                print("Produto não encontrado.")
+
+        elif opcao == "5":
+            print("Saindo do programa. Até mais!")
+            break
+
+        else:
+            print("Opção inválida. Tente novamente.")
+
 if __name__ == "__main__":
     main()
