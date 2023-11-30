@@ -1,4 +1,3 @@
-# produto.py
 
 class Produto:
     def __init__(self, codigo, nome, preco):
