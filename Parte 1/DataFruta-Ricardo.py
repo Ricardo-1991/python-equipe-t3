@@ -146,19 +146,24 @@ class ListaNomes(AnaliseDados):
 
         print("Mediana da lista de nomes:", mediana)
     def mostraMenor(self):
-        '''
-        Este método retorna o menos elemento da lista
-        '''
-        pass
+        if not self.__lista:
+            print("A lista está vazia.")
+            return
+
+        menor_elemento = min(self.__lista)
+        print("Menor elemento da lista de nomes:", menor_elemento)  
 
     def mostraMaior(self):
-        '''
-        Este método retorna o maior elemento da lista
-        '''
-        pass    
+        if not self.__lista:
+            print("A lista está vazia.")
+            return
+
+        menor_elemento = max(self.__lista)
+        print("Maior elemento da lista de nomes:", menor_elemento)     
 
     def __str__(self):
-        pass
+        return f"Lista de Nomes: {self.__lista}"
+    pass
 	
 class ListaDatas(AnaliseDados):
         
