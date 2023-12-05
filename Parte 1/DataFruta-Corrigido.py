@@ -1,7 +1,7 @@
+
 from abc import ABC, abstractmethod
 
-class Data:
-    
+class Data: #Alan feature
     def __init__(self, dia = 1, mes = 1, ano = 2000):
         if dia < 1 or dia > 31:
             raise ValueError("Dia inválido")
@@ -72,24 +72,7 @@ class Data:
                 if self.__dia > outraData.__dia:
                     return True
         return False
-    
-	
-""" 	
-	Data (int _dia, int _mes, int _ano) {
-		dia = _dia;
-		mes = _mes;
-		ano = _ano;
-	}
-	string toString() {
-		string ret = "";
-		ret.append(to_string(dia));
-		ret.append("/");
-		ret.append(to_string(mes));
-		ret.append("/");
-		ret.append(to_string(ano));
-		return ret;
-	}
- """
+
 class AnaliseDados(ABC): 
 
     @abstractmethod
@@ -112,7 +95,7 @@ class AnaliseDados(ABC):
     def mostraMaior(self):
         pass
 
-class ListaNomes(AnaliseDados):
+class ListaNomes(AnaliseDados): #Ricardo feature
     
     def __init__(self):
         super().__init__(type("String"))
@@ -165,113 +148,162 @@ class ListaNomes(AnaliseDados):
         return f"Lista de Nomes: {self.__lista}"
     pass
 	
-class ListaDatas(AnaliseDados):
+class ListaDatas(AnaliseDados): #Ana feature
         
     def __init__(self):
         super().__init__(type(Data))
         self.__lista = []        
     
     def entradaDeDados(self):
-        '''
-        Este método pergunta ao usuários quantos
-        elementos vão existir na lista e depois
-        solicita a digitação de cada um deles
-        '''
-        pass
+        while True:
+            try:
+                num_elementos = int(input("Quantos elementos deseja adicionar? "))
+                break
+            except ValueError:
+                print("Por favor, insira um número válido.")
+
+        for _ in range(num_elementos):
+            while True:
+                try:
+                    dia = int(input("Digite o dia: "))
+                    mes = int(input("Digite o mês: "))
+                    ano = int(input("Digite o ano: "))
+                    nova_data = Data(dia, mes, ano)
+                    self.__lista.append(nova_data)
+                    break
+                except ValueError:
+                    print("Data inválida. Por favor, insira novamente.")
     
     def mostraMediana(self):
-        '''
-        Este método ordena a lista e mostra o
-        elemento que está na metade da lista
-        '''
-        pass    
-     
+        if not self.__lista:
+            print("A lista de datas está vazia.")
+        else:
+            lista_ordenada = sorted(self.__lista)
+            tamanho_lista = len(lista_ordenada)
+            if tamanho_lista % 2 == 0:
+                mediana = (lista_ordenada[tamanho_lista // 2 - 1] + lista_ordenada[tamanho_lista // 2]) / 2
+            else:
+                mediana = lista_ordenada[tamanho_lista // 2]
+            print(f"A mediana das datas é: {mediana}")
+    
     def mostraMenor(self):
-        '''
-        Este método retorna o menos elemento da lista
-        '''
-        pass
+        if not self.__lista:
+            print("A lista de datas está vazia.")
+        else:
+            menor_data = min(self.__lista)
+            print(f"A menor data é: {menor_data}")
     
     def mostraMaior(self):
-        '''
-        Este método retorna o maior elemento da lista
-        '''
-        pass
+        if not self.__lista:
+            print("A lista de datas está vazia.")
+        else:
+            maior_data = max(self.__lista)
+            print(f"A maior data é: {maior_data}")
     
     def __str__(self):
-        pass
+        if not self.__lista:
+            return "Lista de datas vazia."
+        else:
+            return "\n".join(str(data) for data in self.__lista)
 
-class ListaSalarios(AnaliseDados):
+class ListaSalarios(AnaliseDados): #Tiago feature
 
     def __init__(self):
-        super().__init__(type(float))
+        super().__init__(float)
         self.__lista = []        
 
     def entradaDeDados(self):
-        '''
-        Este método pergunta ao usuários quantos
-        elementos vão existir na lista e depois
-        solicita a digitação de cada um deles
-        '''
-        pass
+        while True:
+            try:
+                n = int(input("Quantos elementos na lista de salários? "))
+                for _ in range(n):
+                    salario = float(input("Digite um salário: "))
+                    self.__lista.append(salario)
+                break
+            except ValueError:
+                print("Entrada inválida. Certifique-se de inserir valores numéricos.")
+    pass
 
     def mostraMediana(self):
-        '''
-        Este método ordena a lista e mostra o
-        elemento que está na metade da lista
-        '''
-        pass    
+        sorted_lista = sorted(self.__lista)
+        tamanho = len(sorted_lista)
+        
+        if tamanho % 2 == 0:
+            mediana = (sorted_lista[tamanho // 2 - 1] + sorted_lista[tamanho // 2]) / 2
+        else:
+            mediana = sorted_lista[tamanho // 2]
+
+        print(f"Mediana: {mediana}")
+    pass
 
     def mostraMenor(self):
-        '''
-        Este método retorna o menos elemento da lista
-        '''
-        pass
+        if not self.__lista:
+            print("A lista está vazia.")
+            return
+        menor = min(self.__lista)
+        print(f"Menor elemento: {menor}")
+    pass
 
     def mostraMaior(self):
-        '''
-        Este método retorna o maior elemento da lista
-        '''
-        pass
+        if not self.__lista:
+            print("A lista está vazia.")
+            return
+        maior = max(self.__lista)
+        print(f"Maior elemento: {maior}")
+    pass    
     
     def __str__(self):
-        pass
+        return f"Lista de Salários: {self.__lista}"
+    pass
 
-class ListaIdades(AnaliseDados):
+class ListaIdades(AnaliseDados): #Rafaela feature
     
     def __init__(self):
         super().__init__(type(int))
         self.__lista = []        
     
     def entradaDeDados(self):
-        '''
-        Este método pergunta ao usuários quantos
-        elementos vão existir na lista e depois
-        solicita a digitação de cada um deles
-        '''
-        pass
+        while True:
+            try:
+                n = int(input("Quantos elementos existem na lista de idades? "))
+                for _ in range(n):
+                    idade = int(input("Digite uma idade: "))
+                    self.__lista.append(idade)
+                break
+            except ValueError:
+                print("Entrada inválida. Certifique-se de inserir valores inteiros.")
     
     def mostraMediana(self):
-        '''
-        Este método ordena a lista e mostra o
-        elemento que está na metade da lista
-        '''
-        pass    
+        if not self.__lista:
+            print("A lista está vazia.")
+            return
+        
+        lista_ordenada = sorted(self.__lista)
+        tamanho_lista = len(lista_ordenada)
+
+        if tamanho_lista % 2 == 0:
+            mediana = (lista_ordenada[tamanho_lista // 2 - 1] + lista_ordenada[tamanho_lista // 2]) / 2
+        else:
+            mediana = lista_ordenada[tamanho_lista // 2]
+
+        print(f"Mediana das idades: {mediana}")   
     
     def mostraMenor(self):
-        '''
-        Este método retorna o menos elemento da lista
-        '''
-        pass
+        if not self.__lista:
+            print("A lista está vazia.")
+            return
+        menor_idade = min(self.__lista)
+        print(f"Menor idade: {menor_idade}")
     
     def mostraMaior(self):
-        '''
-        Este método retorna o maior elemento da lista
-        '''
-        pass
+        if not self.__lista:
+            print("A lista está vazia.")
+            return
+        maior_idade = max(self.__lista)
+        print(f"Maior idade: {maior_idade}")
 
     def __str__(self):
-        pass
+        return f"Lista de Idades: {self.__lista}"
 
 def main():
     nomes = ListaNomes()
@@ -290,5 +322,5 @@ def main():
 
     print("Fim do teste!!!")
 
-if __name__ == "__main__":
-    main()
+    if __name__ == "__main__":
+        main()
