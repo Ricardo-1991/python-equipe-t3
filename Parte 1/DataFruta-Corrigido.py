@@ -320,7 +320,6 @@ def main():
         lista.mostraMaior()
         print("___________________")
 
+if __name__ == "__main__":
+    main()
     print("Fim do teste!!!")
-
-    if __name__ == "__main__":
-        main()
