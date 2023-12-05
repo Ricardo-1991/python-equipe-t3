@@ -1,5 +1,6 @@
 
 from abc import ABC, abstractmethod
+from datetime import datetime
 
 class Data:
     
@@ -112,6 +113,10 @@ class AnaliseDados(ABC):
     @abstractmethod
     def mostraMaior(self):
         pass
+    
+    @abstractmethod
+    def listarEmOrdem(self):
+        pass
 
 class ListaNomes(AnaliseDados):
     
@@ -147,7 +152,20 @@ class ListaNomes(AnaliseDados):
         pass    
 
     def __str__(self):
+<<<<<<< Updated upstream:Parte 1/DataFruta-Rafaela.py
         pass
+=======
+        return f"Lista de Nomes: {self.__lista}"
+    pass
+
+    def listarEmOrdem(self):
+        if not self.__lista:
+            print("A lista de nomes está vazia.")
+        else:
+            print("Lista de Nomes em Ordem:")
+            for nome in sorted(self.__lista):
+                print(nome)
+>>>>>>> Stashed changes:Parte 1/DataFruta-Corrigido.py
 	
 class ListaDatas(AnaliseDados):
         
@@ -183,7 +201,22 @@ class ListaDatas(AnaliseDados):
         pass
     
     def __str__(self):
+<<<<<<< Updated upstream:Parte 1/DataFruta-Rafaela.py
         pass
+=======
+        if not self.__lista:
+            return "Lista de datas vazia."
+        else:
+            return "\n".join(str(data) for data in self.__lista)
+    
+     def listarEmOrdem(self):
+        if not self.__lista:
+            print("A lista de datas está vazia.")
+        else:
+            print("Lista de Datas em Ordem:")
+            for data in sorted(self.__lista):
+                print(data)
+>>>>>>> Stashed changes:Parte 1/DataFruta-Corrigido.py
 
 class ListaSalarios(AnaliseDados): # featureTiago
 
@@ -235,7 +268,18 @@ class ListaSalarios(AnaliseDados): # featureTiago
         return f"Lista de Salários: {self.__lista}"
     pass
 
+<<<<<<< Updated upstream:Parte 1/DataFruta-Rafaela.py
 class ListaIdades(AnaliseDados):
+=======
+    def listarEmOrdem(self):
+        if not self.__lista:
+            print("A lista de salários está vazia.")
+        else:
+            print("Lista de Salários em Ordem:")
+            for salario in sorted(self.__lista):
+                print(salario)
+class ListaIdades(AnaliseDados): #Rafaela feature
+>>>>>>> Stashed changes:Parte 1/DataFruta-Corrigido.py
     
     def __init__(self):
         super().__init__(type(int))
@@ -285,6 +329,14 @@ class ListaIdades(AnaliseDados):
 
     def __str__(self):
         return f"Lista de Idades: {self.__lista}"
+    
+    def listarEmOrdem(self):
+        if not self.__lista:
+            print("A lista de idades está vazia.")
+        else:
+            print("Lista de Idades em Ordem:")
+            for idade in sorted(self.__lista):
+                print(idade)
 
 def main():
     nomes = ListaNomes()
@@ -299,7 +351,26 @@ def main():
         lista.mostraMediana()
         lista.mostraMenor()
         lista.mostraMaior()
+        lista.listarEmOrdem()
         print("___________________")
+        
+    # Iterador zip
+    #Percorrendo a lista de nomes e salários
+    print("\nIterador zip:")
+    for nome, salario in zip(nomes.lista, salarios.lista):
+        print(f"{nome}: {salario}")
+
+    # Iterador map
+    # Percorrendo a lista de salários e calculando o custo da folha de pagamento com reajuste de 10%
+    print("\nIterador map:")
+    salarios_reajustados = list(map(lambda x: x * 1.1, salarios.lista))
+    print("Salários reajustados:", salarios_reajustados)
+
+    # Iterador filter
+    # Percorrendo a lista de datas e modificando o dia para o primeiro dia do mês se a data for anterior a 2019
+    print("\nIterador filter:")
+    datas_modificadas = list(map(lambda x: datetime(x.year, x.month, 1) if x.year < 2019 else x, datas.lista))
+    print("Datas modificadas:", datas_modificadas)
 
     print("Fim do teste!!!")
 
