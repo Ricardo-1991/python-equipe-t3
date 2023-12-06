@@ -1,8 +1,7 @@
-
 from abc import ABC, abstractmethod
 
-class Data: #Alan feature
-    def __init__(self, dia = 1, mes = 1, ano = 1950):
+class Data:
+    def __init__(self, dia = 1, mes = 1, ano = 2000):
         if dia < 1 or dia > 31:
             raise ValueError("Dia inválido")
         if mes < 1 or mes > 12:
@@ -39,7 +38,7 @@ class Data: #Alan feature
     
     @ano.setter
     def ano(self, ano):
-        if ano < 1950 or ano > 2100:
+        if ano < 2000 or ano > 2100:
             raise ValueError("Ano inválido")
         self.__ano = ano
     
@@ -72,7 +71,7 @@ class Data: #Alan feature
                 if self.__dia > outraData.__dia:
                     return True
         return False
-
+    
 class AnaliseDados(ABC): 
 
     @abstractmethod
@@ -95,224 +94,185 @@ class AnaliseDados(ABC):
     def mostraMaior(self):
         pass
 
-class ListaNomes(AnaliseDados): #Ricardo feature
+class ListaNomes(AnaliseDados):
     
     def __init__(self):
         super().__init__(type("String"))
         self.__lista = []        
 
     def entradaDeDados(self):
-        try:
-            num_elementos = int(input("Quantos elementos na lista? "))
-            for _ in range(num_elementos):
-                nome = input("Digite um nome: ")
-                self.__lista.append(nome)
-        except ValueError:
-            print("Por favor, insira um número válido.")
-
+        print("Quantos elementos irá existir na lista nommes? ")
+        qtd = int(input())
+        for i in range(qtd):
+            print("Digite o nome {i+1}:")
+            valor = input()
+            self.__lista.append(valor)
 
     def mostraMediana(self):
-        if not self.__lista:
-            print("A lista está vazia.")
-            return
-
-        lista_ordenada = sorted(self.__lista)
-        tamanho_lista = len(lista_ordenada)
-
-        if tamanho_lista % 2 == 0:
-            meio1 = tamanho_lista // 2
-            meio2 = meio1 - 1
-            mediana = lista_ordenada[meio1], lista_ordenada[meio2]
+        listaOrdenada = sorted(self.__lista)
+        if listaOrdenada.__len__() % 2 == 0:
+            pos = (listaOrdenada.__len__() // 2) -1
         else:
-            meio = tamanho_lista // 2
-            mediana = lista_ordenada[meio]
+            pos = listaOrdenada.__len__() // 2
+        print(f"Mediana dos nomes: {listaOrdenada[pos]}")    
 
-        print("Mediana da lista de nomes:", mediana)
     def mostraMenor(self):
-        if not self.__lista:
-            print("A lista está vazia.")
-            return
-
-        menor_elemento = min(self.__lista)
-        print("Menor elemento da lista de nomes:", menor_elemento)  
+        listaOrdenada = sorted(self.__lista)
+        print(f"Primeiro nome: {listaOrdenada[0]}")
 
     def mostraMaior(self):
-        if not self.__lista:
-            print("A lista está vazia.")
-            return
-
-        menor_elemento = max(self.__lista)
-        print("Maior elemento da lista de nomes:", menor_elemento)     
+        listaOrdenada = sorted(self.__lista)
+        print(f"Último nome: {listaOrdenada[listaOrdenada.__len__() - 1]}")   
 
     def __str__(self):
-        return f"Lista de Nomes: {self.__lista}"
-    pass
+        separador = ", "
+        string = separador.join(self.__lista)
+        return string
 	
-class ListaDatas(AnaliseDados): #Ana feature
+class ListaDatas(AnaliseDados):
         
     def __init__(self):
         super().__init__(type(Data))
         self.__lista = []        
     
     def entradaDeDados(self):
-        while True:
-            try:
-                num_elementos = int(input("Quantos elementos deseja adicionar? "))
-                break
-            except ValueError:
-                print("Por favor, insira um número válido.")
-
-        for _ in range(num_elementos):
-            while True:
-                try:
-                    dia = int(input("Digite o dia: "))
-                    mes = int(input("Digite o mês: "))
-                    ano = int(input("Digite o ano: "))
-                    nova_data = Data(dia, mes, ano)
-                    self.__lista.append(nova_data)
-                    break
-                except ValueError:
-                    print("Data inválida. Por favor, insira novamente.")
+        print("Quantos elementos irá existir na lista data? ")
+        qtd = int(input())
+        for i in range(qtd):
+            print(f"Digite o a data {i + 1} no seguinte formato: DD/MM/YYYY")
+            valor = input()
+            dia = int(valor.split(("/"))[0])
+            mes = int(valor.split(("/"))[1])
+            ano = int(valor.split(("/"))[2])
+            data = Data(dia, mes, ano)
+            self.__lista.append(data)
     
     def mostraMediana(self):
-        if not self.__lista:
-            print("A lista de datas está vazia.")
+        listaOrdenada = self.ordena()
+        if listaOrdenada.__len__() % 2 == 0:
+            pos = (listaOrdenada.__len__() // 2) -1
         else:
-            lista_ordenada = sorted(self.__lista)
-            tamanho_lista = len(lista_ordenada)
-            if tamanho_lista % 2 == 0:
-                mediana = (lista_ordenada[tamanho_lista // 2 - 1] + lista_ordenada[tamanho_lista // 2]) / 2
-            else:
-                mediana = lista_ordenada[tamanho_lista // 2]
-            print(f"A mediana das datas é: {mediana}")
-    
+            pos = listaOrdenada.__len__() // 2
+        print(f"Mediana das datas: {listaOrdenada[pos]}")    
+     
     def mostraMenor(self):
-        if not self.__lista:
-            print("A lista de datas está vazia.")
-        else:
-            menor_data = min(self.__lista)
-            print(f"A menor data é: {menor_data}")
+        listaOrdenada = self.ordena()
+        print(f"Primeira data: {listaOrdenada[0]}")
     
     def mostraMaior(self):
-        if not self.__lista:
-            print("A lista de datas está vazia.")
-        else:
-            maior_data = max(self.__lista)
-            print(f"A maior data é: {maior_data}")
+        listaOrdenada = self.ordena()
+        print(f"Última data: {listaOrdenada[listaOrdenada.__len__() - 1]}")
     
     def __str__(self):
-        if not self.__lista:
-            return "Lista de datas vazia."
-        else:
-            return "\n".join(str(data) for data in self.__lista)
+        listaStr = []
+        separador = ", "
+        for i in self.__lista:
+            listaStr.append(str(i))
+        string = separador.join(listaStr)
+        return string
 
-class ListaSalarios(AnaliseDados): #Tiago feature
+    def ordena(self):
+        listaOrdenada = self.__lista.copy()
+        for i in range(listaOrdenada.__len__()):
+            for j in range(listaOrdenada.__len__() - i - 1):
+                if(listaOrdenada[j].__gt__(listaOrdenada[j + 1])):
+                    aux = listaOrdenada[j]
+                    listaOrdenada[j] = listaOrdenada[j + 1]
+                    listaOrdenada[j + 1] = aux
+        return listaOrdenada
+
+class ListaSalarios(AnaliseDados):
 
     def __init__(self):
-        super().__init__(float)
+        super().__init__(type(float))
         self.__lista = []        
 
     def entradaDeDados(self):
-        while True:
-            try:
-                n = int(input("Quantos elementos na lista de salários? "))
-                for _ in range(n):
-                    salario = float(input("Digite um salário: "))
-                    self.__lista.append(salario)
-                break
-            except ValueError:
-                print("Entrada inválida. Certifique-se de inserir valores numéricos.")
-    pass
+        print("Quantos elementos irá existir na lista salário? ")
+        qtd = int(input())
+        for i in range(qtd):
+            print(f"Digite o salário {i+1}:")
+            valor = float(input())
+            self.__lista.append(valor)
 
     def mostraMediana(self):
-        sorted_lista = sorted(self.__lista)
-        tamanho = len(sorted_lista)
-        
-        if tamanho % 2 == 0:
-            mediana = (sorted_lista[tamanho // 2 - 1] + sorted_lista[tamanho // 2]) / 2
+        listaOrdenada = sorted(self.__lista)
+        if listaOrdenada.__len__() % 2 == 0:
+            resultado = ListaSalarios.calculaMedia(listaOrdenada[(listaOrdenada.__len__()//2)-1], listaOrdenada[(listaOrdenada.__len__()//2)])
         else:
-            mediana = sorted_lista[tamanho // 2]
-
-        print(f"Mediana: {mediana}")
-    pass
+            resultado = listaOrdenada[listaOrdenada.__len__() // 2]
+        print(f"Mediana dos salários: {resultado}")     
 
     def mostraMenor(self):
-        if not self.__lista:
-            print("A lista está vazia.")
-            return
-        menor = min(self.__lista)
-        print(f"Menor elemento: {menor}")
-    pass
+        listaOrdenada = sorted(self.__lista)
+        print(f"Menor salário: {listaOrdenada[0]}")
 
     def mostraMaior(self):
-        if not self.__lista:
-            print("A lista está vazia.")
-            return
-        maior = max(self.__lista)
-        print(f"Maior elemento: {maior}")
-    pass    
+        listaOrdenada = sorted(self.__lista)
+        print(f"Maior salário: {listaOrdenada[listaOrdenada.__len__() - 1]}") 
     
     def __str__(self):
-        return f"Lista de Salários: {self.__lista}"
-    pass
+        listaStr = []
+        separador = ", "
+        for i in self.__lista:
+            listaStr.append(str(i))
+        string = separador.join(listaStr)
+        return string
+    
+    def calculaMedia(a, b):
+        media = (a + b) / 2
+        return media
 
-class ListaIdades(AnaliseDados): #Rafaela feature
+class ListaIdades(AnaliseDados):
     
     def __init__(self):
         super().__init__(type(int))
         self.__lista = []        
     
     def entradaDeDados(self):
-        while True:
-            try:
-                n = int(input("Quantos elementos existem na lista de idades? "))
-                for _ in range(n):
-                    idade = int(input("Digite uma idade: "))
-                    self.__lista.append(idade)
-                break
-            except ValueError:
-                print("Entrada inválida. Certifique-se de inserir valores inteiros.")
+        print("Quantos elementos irá existir na lista idade: ?")
+        qtd = int(input())
+        for i in range(qtd):
+            print(f"Digite a idade {i+1}:")
+            valor = int(input())
+            self.__lista.append(valor)
     
     def mostraMediana(self):
-        if not self.__lista:
-            print("A lista está vazia.")
-            return
-        
-        lista_ordenada = sorted(self.__lista)
-        tamanho_lista = len(lista_ordenada)
-
-        if tamanho_lista % 2 == 0:
-            mediana = (lista_ordenada[tamanho_lista // 2 - 1] + lista_ordenada[tamanho_lista // 2]) / 2
+        listaOrdenada = sorted(self.__lista)
+        if listaOrdenada.__len__() % 2 == 0:
+            resultado = ListaIdades.calculaMedia(listaOrdenada[(listaOrdenada.__len__()//2)-1], listaOrdenada[(listaOrdenada.__len__()//2)])
         else:
-            mediana = lista_ordenada[tamanho_lista // 2]
-
-        print(f"Mediana das idades: {mediana}")   
+            resultado = listaOrdenada[listaOrdenada.__len__() // 2]
+        print(f"Mediana das idades: {resultado}")     
     
     def mostraMenor(self):
-        if not self.__lista:
-            print("A lista está vazia.")
-            return
-        menor_idade = min(self.__lista)
-        print(f"Menor idade: {menor_idade}")
+        listaOrdenada = sorted(self.__lista)
+        print(f"Menor idade: {listaOrdenada[0]}")
     
     def mostraMaior(self):
-        if not self.__lista:
-            print("A lista está vazia.")
-            return
-        maior_idade = max(self.__lista)
-        print(f"Maior idade: {maior_idade}")
+        listaOrdenada = sorted(self.__lista)
+        print(f"Maior idade: {listaOrdenada[listaOrdenada.__len__() - 1]}") 
 
     def __str__(self):
-        return f"Lista de Idades: {self.__lista}"
+        listaStr = []
+        separador = ", "
+        for i in self.__lista:
+            listaStr.append(str(i))
+        string = separador.join(listaStr)
+        return string
+    
+    def calculaMedia(a, b):
+        media = (a + b) / 2
+        return media
+        
 
 def main():
     nomes = ListaNomes()
     datas = ListaDatas()
     salarios = ListaSalarios()
     idades = ListaIdades()
-
+    
     listaListas = [nomes, datas, salarios, idades]
-
     for lista in listaListas:
         lista.entradaDeDados()
         lista.mostraMediana()
@@ -320,6 +280,4 @@ def main():
         lista.mostraMaior()
         print("___________________")
 
-if __name__ == "__main__":
-    main()
     print("Fim do teste!!!")
