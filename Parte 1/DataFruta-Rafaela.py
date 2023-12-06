@@ -1,15 +1,13 @@
 
 from abc import ABC, abstractmethod
-from datetime import datetime
 
-class Data:
-    
-    def __init__(self, dia = 1, mes = 1, ano = 2000):
+class Data: #Alan feature
+    def __init__(self, dia = 1, mes = 1, ano = 1950):
         if dia < 1 or dia > 31:
             raise ValueError("Dia inválido")
         if mes < 1 or mes > 12:
             raise ValueError("Mês inválido")
-        if ano < 2000 or ano > 2100:
+        if ano < 1950 or ano > 2100:
             raise ValueError("Ano inválido")
         self.__dia = dia
         self.__mes = mes
@@ -41,7 +39,7 @@ class Data:
     
     @ano.setter
     def ano(self, ano):
-        if ano < 2000 or ano > 2100:
+        if ano < 1950 or ano > 2100:
             raise ValueError("Ano inválido")
         self.__ano = ano
     
@@ -74,23 +72,6 @@ class Data:
                 if self.__dia > outraData.__dia:
                     return True
         return False
-    
-	
-	
-	Data (int _dia, int _mes, int _ano) {
-		dia = _dia;
-		mes = _mes;
-		ano = _ano;
-	}
-	string toString() {
-		string ret = "";
-		ret.append(to_string(dia));
-		ret.append("/");
-		ret.append(to_string(mes));
-		ret.append("/");
-		ret.append(to_string(ano));
-		return ret;
-	}
 
 class AnaliseDados(ABC): 
 
@@ -113,112 +94,134 @@ class AnaliseDados(ABC):
     @abstractmethod
     def mostraMaior(self):
         pass
-    
-    @abstractmethod
-    def listarEmOrdem(self):
-        pass
 
-class ListaNomes(AnaliseDados):
+class ListaNomes(AnaliseDados): #Ricardo feature
     
     def __init__(self):
         super().__init__(type("String"))
         self.__lista = []        
 
     def entradaDeDados(self):
-        '''
-        Este método pergunta ao usuários quantos
-        elementos vão existir na lista e depois
-        solicita a digitação de cada um deles.
-        '''
-        pass
+        try:
+            num_elementos = int(input("Quantos elementos na lista? "))
+            for _ in range(num_elementos):
+                nome = input("Digite um nome: ")
+                self.__lista.append(nome)
+        except ValueError:
+            print("Por favor, insira um número válido.")
+
 
     def mostraMediana(self):
-        '''
-        Este método ordena a lista e mostra o
-        elemento que está na metade da lista
-        '''
-        pass    
+        if not self.__lista:
+            print("A lista está vazia.")
+            return
 
+        lista_ordenada = sorted(self.__lista)
+        tamanho_lista = len(lista_ordenada)
+
+        if tamanho_lista % 2 == 0:
+            meio1 = tamanho_lista // 2
+            meio2 = meio1 - 1
+            mediana = lista_ordenada[meio1], lista_ordenada[meio2]
+        else:
+            meio = tamanho_lista // 2
+            mediana = lista_ordenada[meio]
+
+        print("Mediana da lista de nomes:", mediana)
     def mostraMenor(self):
-        '''
-        Este método retorna o menos elemento da lista
-        '''
-        pass
+        if not self.__lista:
+            print("A lista está vazia.")
+            return
+
+        menor_elemento = min(self.__lista)
+        print("Menor elemento da lista de nomes:", menor_elemento)  
 
     def mostraMaior(self):
-        '''
-        Este método retorna o maior elemento da lista
-        '''
-        pass    
+        if not self.__lista:
+            print("A lista está vazia.")
+            return
 
-    def __str__(self):
-<<<<<<< Updated upstream:Parte 1/DataFruta-Rafaela.py
-        pass
-=======
-        return f"Lista de Nomes: {self.__lista}"
-    pass
-
+        menor_elemento = max(self.__lista)
+        print("Maior elemento da lista de nomes:", menor_elemento)   
+        
     def listarEmOrdem(self):
         if not self.__lista:
-            print("A lista de nomes está vazia.")
-        else:
-            print("Lista de Nomes em Ordem:")
-            for nome in sorted(self.__lista):
-                print(nome)
->>>>>>> Stashed changes:Parte 1/DataFruta-Corrigido.py
+            print("A lista está vazia.")
+            return
+
+        lista_ordenada = sorted(self.__lista)
+        print("Lista de nomes em ordem:", lista_ordenada)  
+
+    def __str__(self):
+        return f"Lista de Nomes: {self.__lista}"
+    pass
 	
-class ListaDatas(AnaliseDados):
+class ListaDatas(AnaliseDados): #Ana feature
         
     def __init__(self):
         super().__init__(type(Data))
         self.__lista = []        
     
     def entradaDeDados(self):
-        '''
-        Este método pergunta ao usuários quantos
-        elementos vão existir na lista e depois
-        solicita a digitação de cada um deles
-        '''
-        pass
+        while True:
+            try:
+                num_elementos = int(input("Quantos elementos deseja adicionar? "))
+                break
+            except ValueError:
+                print("Por favor, insira um número válido.")
+
+        for _ in range(num_elementos):
+            while True:
+                try:
+                    dia = int(input("Digite o dia: "))
+                    mes = int(input("Digite o mês: "))
+                    ano = int(input("Digite o ano: "))
+                    nova_data = Data(dia, mes, ano)
+                    self.__lista.append(nova_data)
+                    break
+                except ValueError:
+                    print("Data inválida. Por favor, insira novamente.")
     
     def mostraMediana(self):
-        '''
-        Este método ordena a lista e mostra o
-        elemento que está na metade da lista
-        '''
-        pass    
-     
+        if not self.__lista:
+            print("A lista de datas está vazia.")
+        else:
+            lista_ordenada = sorted(self.__lista)
+            tamanho_lista = len(lista_ordenada)
+            if tamanho_lista % 2 == 0:
+                mediana = (lista_ordenada[tamanho_lista // 2 - 1] + lista_ordenada[tamanho_lista // 2]) / 2
+            else:
+                mediana = lista_ordenada[tamanho_lista // 2]
+            print(f"A mediana das datas é: {mediana}")
+    
     def mostraMenor(self):
-        '''
-        Este método retorna o menos elemento da lista
-        '''
-        pass
+        if not self.__lista:
+            print("A lista de datas está vazia.")
+        else:
+            menor_data = min(self.__lista)
+            print(f"A menor data é: {menor_data}")
     
     def mostraMaior(self):
-        '''
-        Este método retorna o maior elemento da lista
-        '''
-        pass
+        if not self.__lista:
+            print("A lista de datas está vazia.")
+        else:
+            maior_data = max(self.__lista)
+            print(f"A maior data é: {maior_data}")
     
     def __str__(self):
-<<<<<<< Updated upstream:Parte 1/DataFruta-Rafaela.py
-        pass
-=======
         if not self.__lista:
             return "Lista de datas vazia."
         else:
             return "\n".join(str(data) for data in self.__lista)
-    
-     def listarEmOrdem(self):
+    def listarEmOrdem(self):
         if not self.__lista:
             print("A lista de datas está vazia.")
         else:
             print("Lista de Datas em Ordem:")
             for data in sorted(self.__lista):
                 print(data)
->>>>>>> Stashed changes:Parte 1/DataFruta-Corrigido.py
 
-class ListaSalarios(AnaliseDados): # featureTiago
+class ListaSalarios(AnaliseDados): #Tiago feature
 
     def __init__(self):
         super().__init__(float)
@@ -268,9 +271,6 @@ class ListaSalarios(AnaliseDados): # featureTiago
         return f"Lista de Salários: {self.__lista}"
     pass
 
-<<<<<<< Updated upstream:Parte 1/DataFruta-Rafaela.py
-class ListaIdades(AnaliseDados):
-=======
     def listarEmOrdem(self):
         if not self.__lista:
             print("A lista de salários está vazia.")
@@ -279,7 +279,6 @@ class ListaIdades(AnaliseDados):
             for salario in sorted(self.__lista):
                 print(salario)
 class ListaIdades(AnaliseDados): #Rafaela feature
->>>>>>> Stashed changes:Parte 1/DataFruta-Corrigido.py
     
     def __init__(self):
         super().__init__(type(int))
@@ -297,7 +296,7 @@ class ListaIdades(AnaliseDados): #Rafaela feature
                 print("Entrada inválida. Certifique-se de inserir valores inteiros.")
     
     def mostraMediana(self):
-       if not self.__lista:
+        if not self.__lista:
             print("A lista está vazia.")
             return
         
@@ -305,10 +304,8 @@ class ListaIdades(AnaliseDados): #Rafaela feature
         tamanho_lista = len(lista_ordenada)
 
         if tamanho_lista % 2 == 0:
-            # Média dos dois valores no meio
             mediana = (lista_ordenada[tamanho_lista // 2 - 1] + lista_ordenada[tamanho_lista // 2]) / 2
         else:
-            # Valor no meio para lista ímpar
             mediana = lista_ordenada[tamanho_lista // 2]
 
         print(f"Mediana das idades: {mediana}")   
@@ -321,7 +318,7 @@ class ListaIdades(AnaliseDados): #Rafaela feature
         print(f"Menor idade: {menor_idade}")
     
     def mostraMaior(self):
-       if not self.__lista:
+        if not self.__lista:
             print("A lista está vazia.")
             return
         maior_idade = max(self.__lista)
@@ -329,7 +326,6 @@ class ListaIdades(AnaliseDados): #Rafaela feature
 
     def __str__(self):
         return f"Lista de Idades: {self.__lista}"
-    
     def listarEmOrdem(self):
         if not self.__lista:
             print("A lista de idades está vazia.")
@@ -338,6 +334,41 @@ class ListaIdades(AnaliseDados): #Rafaela feature
             for idade in sorted(self.__lista):
                 print(idade)
 
+def incluir_nome(lista_nomes):
+    nome = input("Digite um nome: ")
+    lista_nomes.append(nome)
+
+def incluir_salario(lista_salarios):
+    salario = float(input("Digite um salário: "))
+    lista_salarios.append(salario)
+
+def incluir_data(lista_datas):
+    while True:
+        try:
+            dia = int(input("Digite o dia: "))
+            mes = int(input("Digite o mês: "))
+            ano = int(input("Digite o ano: "))
+            nova_data = Data(dia, mes, ano)
+            lista_datas.append(nova_data)
+            break
+        except ValueError:
+            print("Data inválida. Por favor, insira novamente.")
+
+def incluir_idade(lista_idades):
+    idade = int(input("Digite uma idade: "))
+    lista_idades.append(idade)
+
+def menu_opcoes():
+    print("\nMenu de Opções:")
+    print("1. Incluir um nome na lista de nomes")
+    print("2. Incluir um salário na lista de salários")
+    print("3. Incluir uma data na lista de datas")
+    print("4. Incluir uma idade na lista de idades")
+    print("5. Percorrer as listas de nomes e salários")
+    print("6. Calcular o valor da folha com um reajuste de 10%")
+    print("7. Modificar o dia das datas anteriores a 2019")
+    print("8. Sair")
+    
 def main():
     nomes = ListaNomes()
     datas = ListaDatas()
@@ -355,19 +386,16 @@ def main():
         print("___________________")
         
     # Iterador zip
-    #Percorrendo a lista de nomes e salários
     print("\nIterador zip:")
     for nome, salario in zip(nomes.lista, salarios.lista):
         print(f"{nome}: {salario}")
 
     # Iterador map
-    # Percorrendo a lista de salários e calculando o custo da folha de pagamento com reajuste de 10%
     print("\nIterador map:")
     salarios_reajustados = list(map(lambda x: x * 1.1, salarios.lista))
     print("Salários reajustados:", salarios_reajustados)
 
     # Iterador filter
-    # Percorrendo a lista de datas e modificando o dia para o primeiro dia do mês se a data for anterior a 2019
     print("\nIterador filter:")
     datas_modificadas = list(map(lambda x: datetime(x.year, x.month, 1) if x.year < 2019 else x, datas.lista))
     print("Datas modificadas:", datas_modificadas)
