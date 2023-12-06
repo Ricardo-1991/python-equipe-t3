@@ -1,8 +1,7 @@
-
 from abc import ABC, abstractmethod
 
 class Data:
-    def __init__(self, dia = 1, mes = 1, ano = 2000):
+    def __init__(self, dia=1, mes=1, ano=2000):
         if dia < 1 or dia > 31:
             raise ValueError("Dia inválido")
         if mes < 1 or mes > 12:
@@ -72,10 +71,8 @@ class Data:
                 if self.__dia > outraData.__dia:
                     return True
         return False
-    
-class AnaliseDados(ABC): 
 
-    @abstractmethod
+class AnaliseDados(ABC):
     def __init__(self, tipoDeDados):
         self.__tipoDeDados = tipoDeDados
 
@@ -86,7 +83,7 @@ class AnaliseDados(ABC):
     @abstractmethod
     def mostraMediana(self):
         pass
-    
+
     @abstractmethod
     def mostraMenor(self):
         pass
@@ -95,14 +92,17 @@ class AnaliseDados(ABC):
     def mostraMaior(self):
         pass
 
+    @abstractmethod
+    def listarEmOrdem(self):
+        pass
+
 class ListaNomes(AnaliseDados):
-    
     def __init__(self):
         super().__init__(type("String"))
         self.__lista = []        
 
     def entradaDeDados(self):
-        print("Quantos elementos irá existir na lista nommes? ")
+        print("Quantos elementos irá existir na lista nomes? ")
         qtd = int(input())
         for i in range(qtd):
             print(f"Digite o nome {i+1}:")
@@ -111,10 +111,10 @@ class ListaNomes(AnaliseDados):
 
     def mostraMediana(self):
         listaOrdenada = sorted(self.__lista)
-        if listaOrdenada.__len__() % 2 == 0:
-            pos = (listaOrdenada.__len__() // 2) -1
+        if len(listaOrdenada) % 2 == 0:
+            pos = (len(listaOrdenada) // 2) - 1
         else:
-            pos = listaOrdenada.__len__() // 2
+            pos = len(listaOrdenada) // 2
         print(f"Mediana dos nomes: {listaOrdenada[pos]}")    
 
     def mostraMenor(self):
@@ -123,15 +123,17 @@ class ListaNomes(AnaliseDados):
 
     def mostraMaior(self):
         listaOrdenada = sorted(self.__lista)
-        print(f"Último nome: {listaOrdenada[listaOrdenada.__len__() - 1]}")   
+        print(f"Último nome: {listaOrdenada[len(listaOrdenada) - 1]}")   
+
+    def listarEmOrdem(self):
+        return sorted(self.__lista)
 
     def __str__(self):
         separador = ", "
         string = separador.join(self.__lista)
         return string
-	
+
 class ListaDatas(AnaliseDados):
-        
     def __init__(self):
         super().__init__(type(Data))
         self.__lista = []        
@@ -140,7 +142,7 @@ class ListaDatas(AnaliseDados):
         print("Quantos elementos irá existir na lista data? ")
         qtd = int(input())
         for i in range(qtd):
-            print(f"Digite o a data {i + 1} no seguinte formato: DD/MM/YYYY")
+            print(f"Digite a data {i + 1} no seguinte formato: DD/MM/YYYY")
             valor = input()
             dia = int(valor.split(("/"))[0])
             mes = int(valor.split(("/"))[1])
@@ -150,20 +152,23 @@ class ListaDatas(AnaliseDados):
     
     def mostraMediana(self):
         listaOrdenada = self.ordena()
-        if listaOrdenada.__len__() % 2 == 0:
-            pos = (listaOrdenada.__len__() // 2) -1
+        if len(listaOrdenada) % 2 == 0:
+            pos = (len(listaOrdenada) // 2) - 1
         else:
-            pos = listaOrdenada.__len__() // 2
-        print(f"Mediana das datas: {listaOrdenada[pos]}")    
-     
+            pos = len(listaOrdenada) // 2
+        print(f"Mediana das datas: {listaOrdenada[pos]}")     
+
     def mostraMenor(self):
         listaOrdenada = self.ordena()
         print(f"Primeira data: {listaOrdenada[0]}")
     
     def mostraMaior(self):
         listaOrdenada = self.ordena()
-        print(f"Última data: {listaOrdenada[listaOrdenada.__len__() - 1]}")
+        print(f"Última data: {listaOrdenada[len(listaOrdenada) - 1]}")
     
+    def listarEmOrdem(self):
+        return self.ordena()
+
     def __str__(self):
         listaStr = []
         separador = ", "
@@ -174,8 +179,8 @@ class ListaDatas(AnaliseDados):
 
     def ordena(self):
         listaOrdenada = self.__lista.copy()
-        for i in range(listaOrdenada.__len__()):
-            for j in range(listaOrdenada.__len__() - i - 1):
+        for i in range(len(listaOrdenada)):
+            for j in range(len(listaOrdenada) - i - 1):
                 if(listaOrdenada[j].__gt__(listaOrdenada[j + 1])):
                     aux = listaOrdenada[j]
                     listaOrdenada[j] = listaOrdenada[j + 1]
@@ -183,7 +188,6 @@ class ListaDatas(AnaliseDados):
         return listaOrdenada
 
 class ListaSalarios(AnaliseDados):
-
     def __init__(self):
         super().__init__(type(float))
         self.__lista = []        
@@ -198,10 +202,10 @@ class ListaSalarios(AnaliseDados):
 
     def mostraMediana(self):
         listaOrdenada = sorted(self.__lista)
-        if listaOrdenada.__len__() % 2 == 0:
-            resultado = ListaSalarios.calculaMedia(listaOrdenada[(listaOrdenada.__len__()//2)-1], listaOrdenada[(listaOrdenada.__len__()//2)])
+        if len(listaOrdenada) % 2 == 0:
+            resultado = ListaSalarios.calculaMedia(listaOrdenada[(len(listaOrdenada)//2)-1], listaOrdenada[(len(listaOrdenada)//2)])
         else:
-            resultado = listaOrdenada[listaOrdenada.__len__() // 2]
+            resultado = listaOrdenada[len(listaOrdenada) // 2]
         print(f"Mediana dos salários: {resultado}")     
 
     def mostraMenor(self):
@@ -210,8 +214,11 @@ class ListaSalarios(AnaliseDados):
 
     def mostraMaior(self):
         listaOrdenada = sorted(self.__lista)
-        print(f"Maior salário: {listaOrdenada[listaOrdenada.__len__() - 1]}") 
+        print(f"Maior salário: {listaOrdenada[len(listaOrdenada) - 1]}") 
     
+    def listarEmOrdem(self):
+        return sorted(self.__lista)
+
     def __str__(self):
         listaStr = []
         separador = ", "
@@ -220,12 +227,12 @@ class ListaSalarios(AnaliseDados):
         string = separador.join(listaStr)
         return string
     
+    @staticmethod
     def calculaMedia(a, b):
         media = (a + b) / 2
         return media
 
 class ListaIdades(AnaliseDados):
-    
     def __init__(self):
         super().__init__(type(int))
         self.__lista = []        
@@ -240,10 +247,10 @@ class ListaIdades(AnaliseDados):
     
     def mostraMediana(self):
         listaOrdenada = sorted(self.__lista)
-        if listaOrdenada.__len__() % 2 == 0:
-            resultado = ListaIdades.calculaMedia(listaOrdenada[(listaOrdenada.__len__()//2)-1], listaOrdenada[(listaOrdenada.__len__()//2)])
+        if len(listaOrdenada) % 2 == 0:
+            resultado = ListaIdades.calculaMedia(listaOrdenada[(len(listaOrdenada)//2)-1], listaOrdenada[(len(listaOrdenada)//2)])
         else:
-            resultado = listaOrdenada[listaOrdenada.__len__() // 2]
+            resultado = listaOrdenada[len(listaOrdenada) // 2]
         print(f"Mediana das idades: {resultado}")     
     
     def mostraMenor(self):
@@ -252,8 +259,11 @@ class ListaIdades(AnaliseDados):
     
     def mostraMaior(self):
         listaOrdenada = sorted(self.__lista)
-        print(f"Maior idade: {listaOrdenada[listaOrdenada.__len__() - 1]}") 
+        print(f"Maior idade: {listaOrdenada[len(listaOrdenada) - 1]}") 
 
+    def listarEmOrdem(self):
+        return sorted(self.__lista)
+    
     def __str__(self):
         listaStr = []
         separador = ", "
@@ -262,12 +272,75 @@ class ListaIdades(AnaliseDados):
         string = separador.join(listaStr)
         return string
     
+    @staticmethod
     def calculaMedia(a, b):
         media = (a + b) / 2
         return media
-        
 
-def main():
+def incluirNome(lista):
+    lista.entradaDeDados()
+
+def incluirSalario(lista):
+    lista.entradaDeDados()
+
+def incluirData(lista):
+    lista.entradaDeDados()
+
+def incluirIdade(lista):
+    lista.entradaDeDados()
+
+def percorrerListas(listaNomes, listaSalarios):
+    listaSalarios.percorreComNomes(listaNomes)
+
+def calcularReajuste(listaSalarios):
+    salariosReajustados = listaSalarios.reajustaSalarios()
+    print("Salários reajustados em 10%:")
+    print(salariosReajustados)
+
+def modificarDatas(listaDatas):
+    listaDatas.modificaDatasAnteriores()
+    print("Datas modificadas:")
+
+def menu():
+    nomes = ListaNomes()
+    datas = ListaDatas()
+    salarios = ListaSalarios()
+    idades = ListaIdades()
+
+    opcao = 0
+    while opcao != 8:
+        print("\nMenu:")
+        print("1. Incluir um nome na lista de nomes")
+        print("2. Incluir um salário na lista de salários")
+        print("3. Incluir uma data na lista de datas")
+        print("4. Incluir uma idade na lista de idades")
+        print("5. Percorrer as listas de nomes e salários")
+        print("6. Calcular o valor da folha com um reajuste de 10%")
+        print("7. Modificar o dia das datas anteriores a 2019")
+        print("8. Sair")
+
+        opcao = int(input("Escolha uma opção: "))
+
+        if opcao == 1:
+            incluirNome(nomes)
+        elif opcao == 2:
+            incluirSalario(salarios)
+        elif opcao == 3:
+            incluirData(datas)
+        elif opcao == 4:
+            incluirIdade(idades)
+        elif opcao == 5:
+            percorrerListas(nomes, salarios)
+        elif opcao == 6:
+            calcularReajuste(salarios)
+        elif opcao == 7:
+            modificarDatas(datas)
+        elif opcao == 8:
+            print("Saindo do aplicativo.")
+        else:
+            print("Opção inválida. Tente novamente.")
+
+if __name__ == "__main__":
     nomes = ListaNomes()
     datas = ListaDatas()
     salarios = ListaSalarios()
@@ -279,9 +352,10 @@ def main():
         lista.mostraMediana()
         lista.mostraMenor()
         lista.mostraMaior()
+        print("Lista em Ordem:")
+        print(lista.listarEmOrdem())
         print("___________________")
 
     print("Fim do teste!!!")
 
-if __name__ == "__main__":
-    main()
+    menu()
